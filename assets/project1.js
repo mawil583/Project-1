@@ -12,7 +12,7 @@ $.ajax(
     }
     ).then(
         function(response) {
-            console.log(response)
+            console.log(JSON.parse(response))
         },
         function(error) {
             console.log(error)
