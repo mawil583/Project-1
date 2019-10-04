@@ -25,7 +25,7 @@ $(document).ready(function () {
 
 
 
-    var cityCountry = "";
+    var cityCountry = "" ;
 
     var APIKey = "bc835c03fbfeab5d3660a9a497ae24d0";
 
@@ -38,14 +38,16 @@ $(document).ready(function () {
     $(document).on("click", ".btn", function (event) {
         
         event.preventDefault();
-        cityCountry = $("#inlineFormInput").val();
-        ajaxCall();
+        cityCountry = $("#inlineFormInput").val().trim();
         console.log(cityCountry);
+        ajaxCall();
 
     })
 
 
     function ajaxCall() {
+
+        var queryWeatherURL = `https://api.openweathermap.org/data/2.5/forecast?q=${cityCountry}&units=imperial&appid=${APIKey}`;
 
         $.ajax({
             url: queryWeatherURL,
