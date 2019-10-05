@@ -62,8 +62,7 @@ $(document).ready(function () {
     // eventfulCall();
 
     function weatherCall() {
-        // var queryWeatherURL = "https://api.openweathermap.org/data/2.5/forecast?" +
-        // "q=" + cityCountry +"&units=imperial&appid=" + APIKey;
+       
 
         var queryWeatherURL = `https://api.openweathermap.org/data/2.5/forecast?q=${city},us&units=imperial&appid=${weatherKey}`;
         $.ajax({
@@ -97,5 +96,23 @@ $(document).ready(function () {
         eventfulCall();
         console.log(city);
     })
-})
+       
+    function autoFill() {
 
+        
+        var placesAutocomplete = places({
+            countries: ['us'], // Search in the United States of America and in the Russian Federation
+            type: 'city', // Search only for cities names
+            aroundLatLngViaIP: false, // disable the extra search/boost around the source IP
+          appId: 'plIL9UL82OV7',
+          apiKey: '0af80e9e7ca21da5ad41e64a38158240',
+          container: document.querySelector('#inlineFormInput')
+          
+
+          
+        })
+    };
+        autoFill();
+
+    
+})
