@@ -29,12 +29,19 @@ $(document).ready(function () {
                     let eventDateTimeArr = response.events.event[i].start_time.split(" ");
                     let eventDate = moment(eventDateTimeArr[0]).format('dddd, MMMM Do YYYY');
                     let eventTime = moment(eventDateTimeArr[1], 'HH:mm:ss').format('h:mm A');
+                    let eventImageWithLocalPath = response.events.event[i].image.medium.url;
+                    let webPath = "https:";
+                    let eventImage = webPath + eventImageWithLocalPath;
+                    console.log(eventImage);
+                    console.log(typeof(eventImage));
+                    
 
                     // This is for table data
                     let tRow = $("<tr>");
                     let tData = $(
                         "<td>" + eventTitle + "</td>" +
                         "<td>" + eventVenue + "</td>" +
+                        "<td>" + eventAddress + "</td>" +
                         "<td>" + eventDate + "</td>" +
                         "<td>" + eventTime + "</td>" +
                         "<td>" + `${cloudiness}, Temp(F) = ${mainTemp}` + "</td>");
@@ -43,7 +50,7 @@ $(document).ready(function () {
 
                     // This is for card data
                     let cData = $(
-                        '<div class="card" style="width: 18rem;"><img class="card-img-top" src="assets/images/fallness.jpg" alt="Card Image"><div class="card-body">' +
+                        '<div class="card" style="width: 18rem;"><img class="card-img-top" src="' + eventImage + '" alt="Card Image"><div class="card-body">' +
                             '<h5 class="card-title event">' + eventTitle + '</h5>' +
                             '<p class="card-text date">' + eventDate + '</p></div><ul class="list-group list-group-flush">' +
                             '<li class="list-group-item venue">' + eventVenue + '</li>' +
