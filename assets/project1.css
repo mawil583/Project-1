@@ -3,3 +3,9 @@
   align-items: center;
   justify-content: center;
 }
+
+body {
+  background-image: url(./images/new-background.jpeg);
+  background-attachment: fixed;
+}
+
