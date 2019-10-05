@@ -10,6 +10,7 @@ $(document).ready(function () {
     function eventfulCall() {
 
         let queryUrl = `https://cors-anywhere.herokuapp.com/http://api.eventful.com/json/events/search?app_key=${eventfulKey}&location=${city}&sort_order=popularity&date=this week`;
+        // let queryUrl = `https://cors-anywhere.herokuapp.com/http://api.eventful.com/json/categories/list?app_key=${eventfulKey}`;
         $.ajax(
             {
                 url: queryUrl,
@@ -19,14 +20,17 @@ $(document).ready(function () {
             function (responseUnformatted) {
                 console.log(JSON.parse(responseUnformatted));
                 let response = JSON.parse(responseUnformatted);
+                console.log(response);
                 for (let i = 0; i < response.events.event.length; i++) {
 
                     let eventTitle = response.events.event[i].title;
                     let eventVenue = response.events.event[i].venue_name;
-                    // let eventAddress = response.events.event[0].venue_address;
+                    let eventAddress = response.events.event[i].venue_address;
                     let eventDateTimeArr = response.events.event[i].start_time.split(" ");
                     let eventDate = moment(eventDateTimeArr[0]).format('dddd, MMMM Do YYYY');
                     let eventTime = moment(eventDateTimeArr[1], 'HH:mm:ss').format('h:mm A');
+
+                    // This is for table data
                     let tRow = $("<tr>");
                     let tData = $(
                         "<td>" + eventTitle + "</td>" +
@@ -36,12 +40,26 @@ $(document).ready(function () {
                         "<td>" + `${cloudiness}, Temp(F) = ${mainTemp}` + "</td>");
                     $(tRow).append(tData);
                     $("tbody").append(tRow);
+
+                    // This is for card data
+                    let cData = $(
+                        '<div class="card" style="width: 18rem;"><img class="card-img-top" src="assets/images/fallness.jpg" alt="Card Image"><div class="card-body">' +
+                            '<h5 class="card-title event">' + eventTitle + '</h5>' +
+                            '<p class="card-text date">' + eventDate + '</p></div><ul class="list-group list-group-flush">' +
+                            '<li class="list-group-item venue">' + eventVenue + '</li>' +
+                            '<li class="list-group-item address">' + eventAddress + '</li>' +
+                            '<li class="list-group-item time">' + eventTime + '</li>' +
+                            '<li class="list-group-item weather">' + `${cloudiness}, Temp(F) = ${mainTemp}` + '</li>' +
+                        '</ul></div>'
+                    )
+                    $(".card-div").append(cData);
                 }
             },
             function (error) {
                 console.log(error)
             });
     };
+    // eventfulCall();
 
     function weatherCall() {
         // var queryWeatherURL = "https://api.openweathermap.org/data/2.5/forecast?" +
