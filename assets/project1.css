@@ -16,8 +16,31 @@ body, html {
   background-color: transparent !important;
   
 }
+
 .display-4 {
   /* font-family: 'Mansalva', cursive; */
   font-family: 'Raleway', sans-serif;
 }
 
+/* when screen is on a desktop, show the table and hide the cards */
+@media screen and (max-width: 1920px) {
+   
+  .table-1 {
+    visibility: visible;
+  }
+  .card-div {
+    visibility: hidden; 
+    max-height: 0%;
+  }
+}
+  /* when screen is a mobile phone, show the cards and hide the table */
+@media screen and (max-width: 479px) {
+  .card-div {
+    visibility: visible;
+        
+  }
+  .table-1 {
+    visibility: hidden;
+    max-height: 0%;
+  }
+  }
