@@ -8,4 +8,13 @@ body {
   background-image: url(./images/new-background.jpeg);
   background-attachment: fixed;
 }
+.jumbotron {
+  color: whitesmoke !important;
+  background-color: transparent !important;
+  
+}
+.display-4 {
+  /* font-family: 'Mansalva', cursive; */
+  font-family: 'Raleway', sans-serif;
+}
 
