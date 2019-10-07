@@ -8,9 +8,7 @@ body {
   background-image: url(./images/new-background.jpeg);
   background-attachment: fixed;
 }
-body, html {
-  height: 100%;
-}
+
 .jumbotron {
   color: whitesmoke !important;
   background-color: transparent !important;
@@ -23,20 +21,20 @@ body, html {
 }
 
 /* when screen is on a desktop, show the table and hide the cards */
-@media screen and (max-width: 1920px) {
-   
   .table-1 {
     visibility: visible;
+        
   }
+  
   .card-div {
-    visibility: hidden; 
-    max-height: 0%;
+    visibility: hidden;
   }
-}
+  
   /* when screen is a mobile phone, show the cards and hide the table */
-@media screen and (max-width: 479px) {
+@media screen and (max-width: 500px) {
   .card-div {
     visibility: visible;
+    display: 100%;
         
   }
   .table-1 {
