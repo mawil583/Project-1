@@ -1,19 +1,13 @@
 $(document).ready(function () {
     // global variables
+    let opencageKey = 'c78f665164ae437d8b8cc39081f7e3ff';
+    let darkskyKey = "9f1107bdae4244be0aadbf24108d9771";
     var eventfulKey = `fWBHtdbcHkhq4Lcr`;
-    var weatherKey = "bc835c03fbfeab5d3660a9a497ae24d0";
-    var city = "";
-    // let mainTemp = '';
-    // let cloudiness = '';
-    let weatherDateTimeArr;
-    let weatherTime;
-    let weatherDate;
-    let weatherDateTimeStr;
     let formattedWeatherDateTime;
     let solveCorsError = 'https://cors-anywhere.herokuapp.com/';
-    // let lat;
-    // let lon;
 
+
+    $(".loader").hide();
     function autoFill() {
         var placesAutocomplete = places({
             countries: ['us'], // Search in the United States of America and in the Russian Federation
@@ -30,21 +24,13 @@ $(document).ready(function () {
     $(document).on("click", ".btn", function (event) {
 
         event.preventDefault();
-        // nicole working here to add the loader function
-
-        city = $("#inlineFormInput").val();
-        // TO-Do: format the city parameter
-        // weatherCall();
+        $(".loader").show();
+        let city = $("#inlineFormInput").val();
         opencageCall(city);
-
-        console.log(city);
     });
 
     // API that converts city into lat/lon coordinates
     function opencageCall(city) {
-        let opencageKey = 'c78f665164ae437d8b8cc39081f7e3ff';
-        // city = 'tempe';
-        // let stateAbv = 'az'
         let opencageUrl = `https://api.opencagedata.com/geocode/v1/json?q=${city}%2C%20usa&key=${opencageKey}&language=en&pretty=1`;
         $.ajax({
             url: opencageUrl,
@@ -55,41 +41,30 @@ $(document).ready(function () {
                 console.log(response);
                 let lat = response.results[0].geometry.lat;
                 let lon = response.results[0].geometry.lng;
-                console.log(lat);
-                console.log(lon);
                 darkskyCall(lat, lon, city);
+            },
+            function(error) {
+                console.error(error);
             })
     };
 
     // WeatherAPI
     function darkskyCall(lat, lon, city) {
-        let darkskyKey = "9f1107bdae4244be0aadbf24108d9771";
-        let darkskyUrl = `${solveCorsError}https://api.darksky.net/forecast/${darkskyKey}/${lat},${lon}`;
-        // let darkskyUrl = `${solveCorsError}https://api.darksky.net/forecast/${darkskyKey}/33.4255056,-111.9400125`;
-
-
+        let darkskyUrl = `${solveCorsError}https://api.darksky.net/forecast/${darkskyKey}/${lat},${lon}?extend=hourly`;
         $.ajax({
             url: darkskyUrl,
             method: "GET"
         })
             .then(function (response) {
-                console.log(response);
-                let darkskyTime0 = response.hourly.data[0].time;
-                let darkskyTime1 = response.hourly.data[1].time;
-                console.log(`the first response is at ${moment.unix(darkskyTime0).format('LLLL')}`);
-                let formattedTime0 = moment.unix(darkskyTime0).format('LLLL');
-                console.log(formattedTime0);
-                console.log(`the first response is at ${moment.unix(darkskyTime1).format('LLLL')}`);
-
                 eventfulCall(city, response);
+            },
+            function(error) {
+                console.error(error);
             })
-
-
     };
 
     // function declarations
     function eventfulCall(city, darkskyResponse) {
-
         let queryUrl = `${solveCorsError}http://api.eventful.com/json/events/search?app_key=${eventfulKey}&location=${city}&sort_order=popularity&date=this week`;
         // let queryUrl = `https://cors-anywhere.herokuapp.com/http://api.eventful.com/json/categories/list?app_key=${eventfulKey}`;
         $.ajax(
@@ -99,18 +74,11 @@ $(document).ready(function () {
             }
         ).then(
             function (responseUnformatted) {
-                console.log(moment.unix(darkskyResponse.hourly.data[0].time).format('LLLL'));
-                let cloudiness;
-                let mainTemp;
-                let darkskyHourlyDataArr = darkskyResponse.hourly.data;
-
-                console.log(responseUnformatted);
-                console.log(JSON.parse(responseUnformatted));
                 let response = JSON.parse(responseUnformatted);
                 console.log(response);
-
+                let darkskyHourlyDataArr = darkskyResponse.hourly.data;
+                $("tbody").empty();
                 for (let i = 0; i < response.events.event.length; i++) {
-
                     let eventTitle = response.events.event[i].title;
                     let eventVenue = response.events.event[i].venue_name;
                     let eventAddress = response.events.event[i].venue_address;
@@ -122,29 +90,15 @@ $(document).ready(function () {
                     let eventImageWithLocalPath = response.events.event[i].image.medium.url;
                     let webPath = "https:";
                     let eventImage = webPath + eventImageWithLocalPath;
-
                     for (let j = 0; j < darkskyHourlyDataArr.length; j++) {
                         let darkskyDateTime = moment.unix(darkskyHourlyDataArr[j].time).format('LLLL');
-                        if (darkskyDateTime == formattedEventDateTime) {
-                            cloudiness = darkskyResponse.hourly.data[j].summary;
-                            mainTemp = darkskyResponse.hourly.data[j].temperature;
-
-                            console.log(eventImage);
-                            console.log(typeof (eventImage));
-    
-    
+                        let darkskyMinusEventTime = moment(darkskyDateTime).diff(moment(formattedEventDateTime), "minutes");
+                        let eventMinusDarksky = moment(formattedEventDateTime).diff(moment(darkskyDateTime), "minutes");
+                        if (darkskyDateTime == formattedEventDateTime || darkskyMinusEventTime <= 30 && darkskyMinusEventTime >= 0 || eventMinusDarksky < 30 && eventMinusDarksky >= 0) {
+                            let cloudiness = darkskyResponse.hourly.data[j].summary;
+                            let mainTemp = Math.round(darkskyResponse.hourly.data[j].temperature);
                             // This is for table data
                             let tRow = $("<tr>");
-    
-                            console.log(formattedWeatherDateTime);
-                            console.log(formattedEventDateTime);
-    
-                            // if weather API response occurs before the ev
-    
-                            // if (formattedWeatherDateTime < formattedEventDateTime) {
-                            //     console.log(`${formattedWeatherDateTime} is less than ${formattedEventDateTime}`)
-                            // }
-    
                             let tData = $(
                                 "<td>" + eventTitle + "</td>" +
                                 "<td>" + eventVenue + "</td>" +
@@ -154,7 +108,6 @@ $(document).ready(function () {
                                 "<td>" + `${cloudiness}, Temp(F) = ${mainTemp}` + "</td>");
                             $(tRow).append(tData);
                             $("tbody").append(tRow);
-    
                             // This is for card data
                             let cData = $(
                                 '<div class="card" style="width: 18rem;"><img class="card-img-top" src="' + eventImage + '" alt="Card Image"><div class="card-body">' +
@@ -167,105 +120,13 @@ $(document).ready(function () {
                                 '</ul></div>'
                             )
                             $(".card-div").append(cData);
+                            $(".loader").hide();
                         }
-
-
-
                     }
-
-
                 }
             },
             function (error) {
                 console.log(error)
             });
     };
-
-
-
-
-
-
-
-
-
-
-
-
-    // darkskyCall();
-
-    //     function accuweatherCall() {
-
-    //         // testing 2nd weatherAPI
-    //         let accuweatherApiKey = 'r5S2eubCKbMSdum0JfBpghJAfN5dJcTb';
-    //         var accuweatherQueryURL = `http://dataservice.accuweather.com/locations/v1/phoenix,az?apikey=${accuweatherApiKey}&language=en-us&details=true`;
-    //     $.ajax({
-    //         url: accuweatherQueryURL,
-    //         method: "GET"
-
-    //     })
-    //         .then(function (response) {
-    //             console.log(response);
-    //             console.log(response.list);
-
-
-    //             console.log(response.list[12].main.temp);
-    //             mainTemp = response.list[12].main.temp
-
-    //             weatherDateTimeArr = response.list[12].dt_txt.split(" ");
-    //             weatherDate = weatherDateTimeArr[0];
-    //             console.log(weatherDate);
-
-    //             weatherTime = weatherDateTimeArr[1];
-    //             console.log(weatherTime);
-
-    //             weatherDateTimeStr = response.list[12].dt_txt
-    //             formattedWeatherDateTime = moment(weatherDateTimeStr).format('LLLL');
-
-
-    //             console.log(response.list[12].weather[0].description);
-    //             cloudiness = response.list[12].weather[0].description;
-
-
-    //             console.log(response.city.name);
-    //         })
-    // // end function
-    //     };
-
-    // function weatherCall() {
-
-
-    //     var queryWeatherURL = `https://api.openweathermap.org/data/2.5/forecast?q=${city},us&units=imperial&appid=${weatherKey}`;
-    //     $.ajax({
-    //         url: queryWeatherURL,
-    //         method: "GET"
-
-    //     })
-    //         .then(function (response) {
-    //             console.log(response);
-    //             console.log(response.list);
-
-
-    //             console.log(response.list[12].main.temp);
-    //             mainTemp = response.list[12].main.temp
-
-    //             weatherDateTimeArr = response.list[12].dt_txt.split(" ");
-    //             weatherDate = weatherDateTimeArr[0];
-    //             console.log(weatherDate);
-
-    //             weatherTime = weatherDateTimeArr[1];
-    //             console.log(weatherTime);
-
-    //             weatherDateTimeStr = response.list[12].dt_txt
-    //             formattedWeatherDateTime = moment(weatherDateTimeStr).format('LLLL');
-
-
-    //             console.log(response.list[12].weather[0].description);
-    //             cloudiness = response.list[12].weather[0].description;
-
-
-    //             console.log(response.city.name);
-    //         })
-    // }
-
 })
