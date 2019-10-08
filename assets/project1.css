@@ -80,14 +80,16 @@ body {
   }
   
   .card-div {
-    visibility: hidden;
+    /*visibility: hidden;*/
+    display: none;
   }
   
   /* when screen is a mobile phone, show the cards and hide the table */
  @media screen and (max-width: 500px) {
   .card-div {
-    visibility: visible;
+    /*visibility: visible;*/
     display: 100%;
+    display: block;
         
   }
   .table-1 {
