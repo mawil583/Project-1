@@ -98,6 +98,11 @@ $(document).ready(function () {
     $(document).on("click", ".btn", function (event) {
 
         event.preventDefault();
+        // nicole working here to add the loader function
+        
+
+
+
         city = $("#inlineFormInput").val();
         weatherCall();
         eventfulCall();
