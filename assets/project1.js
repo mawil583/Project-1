@@ -22,7 +22,6 @@ $(document).ready(function () {
 
     // Code starts executing on this button click
     $(document).on("click", ".btn", function (event) {
-
         event.preventDefault();
         $(".loader").show();
         let city = $("#inlineFormInput").val();
@@ -78,7 +77,11 @@ $(document).ready(function () {
                 console.log(response);
                 let darkskyHourlyDataArr = darkskyResponse.hourly.data;
                 $("tbody").empty();
+                let sortedEvents = response.events.event.sort((a, b) => moment(b.start_time).format('LLLL') - moment(a.start_time).format('LLLL'));
+                console.log(sortedEvents);
+
                 for (let i = 0; i < response.events.event.length; i++) {
+                    let eventUrl = response.events.event[i].url;
                     let eventTitle = response.events.event[i].title;
                     let eventVenue = response.events.event[i].venue_name;
                     let eventAddress = response.events.event[i].venue_address;
