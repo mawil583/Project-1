@@ -4,6 +4,10 @@
   justify-content: center;
 }
 
+.flex-container {
+  display: flex;
+}
+
 body {
   background-image: url(./images/new-background.jpeg);
   background-attachment: fixed;
@@ -96,4 +100,19 @@ body {
     visibility: hidden;
     max-height: 0%;
   }
+
+   img { 
+    width: 75%;
+    height: 75%;
+  }
+
+  .image {
+    padding-top: 10%;
+  }
+
+  p {
+    margin-bottom: 0% !important;
+    font-size: 8pt;
+  }
+
   }
