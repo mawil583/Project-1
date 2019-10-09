@@ -26,9 +26,9 @@ $(document).ready(function () {
         $(".loader").show();
         let city = $("#inlineFormInput").val();
         opencageCall(city);
-        
 
-        
+
+
     });
 
     // API that converts city into lat/lon coordinates
@@ -45,9 +45,9 @@ $(document).ready(function () {
                 let lon = response.results[0].geometry.lng;
                 darkskyCall(lat, lon, city);
             },
-            function(error) {
-                console.error(error);
-            })
+                function (error) {
+                    console.error(error);
+                })
     };
 
     // WeatherAPI
@@ -60,9 +60,9 @@ $(document).ready(function () {
             .then(function (response) {
                 eventfulCall(city, response);
             },
-            function(error) {
-                console.error(error);
-            })
+                function (error) {
+                    console.error(error);
+                })
     };
 
     // function declarations
@@ -91,7 +91,7 @@ $(document).ready(function () {
                     } else {
                         return 0;
                     }
-                   
+
                 });
                 console.log(sortedEvents);
 
@@ -128,14 +128,14 @@ $(document).ready(function () {
                             $("tbody").append(tRow);
                             // This is for card data
                             let cData = $(
-                                '<div class="card" style="width: 18rem;"><img class="card-img-top" src="' + eventImage + '" alt="Card Image"><div class="card-body">' +
+                                '<div class="flex-container bg-light m-3 rounded"><img class="image text-center" src="' + eventImage + '" alt="Card Image"><div class="info">' +
                                 '<h5 class="card-title event">' + eventTitle + '</h5>' +
-                                '<p class="card-text date">' + eventDate + '</p></div><ul class="list-group list-group-flush">' +
-                                '<li class="list-group-item venue">' + eventVenue + '</li>' +
-                                '<li class="list-group-item address">' + eventAddress + '</li>' +
-                                '<li class="list-group-item time">' + eventTime + '</li>' +
-                                '<li class="list-group-item weather">' + `${cloudiness}, Temp(F) = ${mainTemp}` + '</li>' +
-                                '</ul></div>'
+                                '<p class="date">' + eventDate + '</p>' +
+                                '<p class="venue">' + eventVenue + '</p>' +
+                                '<p class="address">' + eventAddress + '</p>' +
+                                '<p class="time">' + eventTime + '</p>' +
+                                '<p class="weather">' + `${cloudiness}, Temp(F) = ${mainTemp}` + '</p>'  +
+                                '</div>'
                             )
                             $(".card-div").append(cData);
                             $(".loader").hide();
@@ -149,5 +149,5 @@ $(document).ready(function () {
             });
     };
 
-   
+
 })
