@@ -3,12 +3,11 @@ $(document).ready(function () {
     let opencageKey = 'c78f665164ae437d8b8cc39081f7e3ff';
     let darkskyKey = "9f1107bdae4244be0aadbf24108d9771";
     var eventfulKey = `fWBHtdbcHkhq4Lcr`;
-    let formattedWeatherDateTime;
     let solveCorsError = 'https://cors-anywhere.herokuapp.com/';
 
-
-
     $(".loader").hide();
+    $(".table-1").hide();
+    
     function autoFill() {
         var placesAutocomplete = places({
             countries: ['us'], // Search in the United States of America and in the Russian Federation
@@ -27,9 +26,6 @@ $(document).ready(function () {
         $(".loader").show();
         let city = $("#inlineFormInput").val();
         opencageCall(city);
-
-
-
     });
 
     // API that converts city into lat/lon coordinates
@@ -86,6 +82,7 @@ $(document).ready(function () {
                 }
                 let darkskyHourlyDataArr = darkskyResponse.hourly.data;
                 $("tbody").empty();
+                $(".card-div").empty();
                 // sorting function
                 let sortedEvents = response.events.event.sort((a, b) => {
                     let aDateTime = new Date(a.start_time).getTime();
@@ -100,7 +97,7 @@ $(document).ready(function () {
 
                 });
                 console.log(sortedEvents);
-
+                $(".table-1").show();
                 for (let i = 0; i < response.events.event.length; i++) {
                     let eventUrl = response.events.event[i].url;
                     let eventTitle = response.events.event[i].title;
@@ -140,7 +137,7 @@ $(document).ready(function () {
                                 '<p class="venue">' + eventVenue + '</p>' +
                                 '<p class="address">' + eventAddress + '</p>' +
                                 '<p class="time">' + eventTime + '</p>' +
-                                '<p class="weather">' + `${cloudiness}, Temp(F) = ${mainTemp}` + '</p>'  +
+                                '<p class="weather">' + `${cloudiness}, Temp(F) = ${mainTemp}` + '</p>' +
                                 '</div>'
                             )
                             $(".card-div").append(cData);
