@@ -77,7 +77,19 @@ $(document).ready(function () {
                 console.log(response);
                 let darkskyHourlyDataArr = darkskyResponse.hourly.data;
                 $("tbody").empty();
-                let sortedEvents = response.events.event.sort((a, b) => moment(b.start_time).format('LLLL') - moment(a.start_time).format('LLLL'));
+                // sorting function
+                let sortedEvents = response.events.event.sort((a, b) => {
+                    let aDateTime = new Date(a.start_time).getTime();
+                    let bDateTime = new Date(b.start_time).getTime();
+                    if (aDateTime < bDateTime) {
+                        return -1;
+                    } else if (aDateTime > bDateTime) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                   
+                });
                 console.log(sortedEvents);
 
                 for (let i = 0; i < response.events.event.length; i++) {
