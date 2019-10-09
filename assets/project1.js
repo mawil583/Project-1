@@ -7,6 +7,7 @@ $(document).ready(function () {
     let solveCorsError = 'https://cors-anywhere.herokuapp.com/';
 
 
+
     $(".loader").hide();
     function autoFill() {
         var placesAutocomplete = places({
@@ -21,7 +22,7 @@ $(document).ready(function () {
     autoFill();
 
     // Code starts executing on this button click
-    $(document).on("click", ".btn", function (event) {
+    $(document).on("click", "#submit", function (event) {
         event.preventDefault();
         $(".loader").show();
         let city = $("#inlineFormInput").val();
@@ -78,6 +79,11 @@ $(document).ready(function () {
             function (responseUnformatted) {
                 let response = JSON.parse(responseUnformatted);
                 console.log(response);
+                if (response.events == null) {
+                    $(".loader").hide();
+                    $("#inlineFormInput").val('');
+                    $("#exampleModalCenter").modal();
+                }
                 let darkskyHourlyDataArr = darkskyResponse.hourly.data;
                 $("tbody").empty();
                 // sorting function
