@@ -26,6 +26,9 @@ $(document).ready(function () {
         $(".loader").show();
         let city = $("#inlineFormInput").val();
         opencageCall(city);
+        
+
+        
     });
 
     // API that converts city into lat/lon coordinates
@@ -127,9 +130,12 @@ $(document).ready(function () {
                         }
                     }
                 }
+                $("#inlineFormInput").val('');
             },
             function (error) {
                 console.log(error)
             });
     };
+
+   
 })
