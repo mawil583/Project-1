@@ -7,6 +7,7 @@ $(document).ready(function () {
     let solveCorsError = 'https://cors-anywhere.herokuapp.com/';
 
 
+
     $(".loader").hide();
     function autoFill() {
         var placesAutocomplete = places({
@@ -21,14 +22,14 @@ $(document).ready(function () {
     autoFill();
 
     // Code starts executing on this button click
-    $(document).on("click", ".btn", function (event) {
+    $(document).on("click", "#submit", function (event) {
         event.preventDefault();
         $(".loader").show();
         let city = $("#inlineFormInput").val();
         opencageCall(city);
-        
 
-        
+
+
     });
 
     // API that converts city into lat/lon coordinates
@@ -45,9 +46,9 @@ $(document).ready(function () {
                 let lon = response.results[0].geometry.lng;
                 darkskyCall(lat, lon, city);
             },
-            function(error) {
-                console.error(error);
-            })
+                function (error) {
+                    console.error(error);
+                })
     };
 
     // WeatherAPI
@@ -60,9 +61,9 @@ $(document).ready(function () {
             .then(function (response) {
                 eventfulCall(city, response);
             },
-            function(error) {
-                console.error(error);
-            })
+                function (error) {
+                    console.error(error);
+                })
     };
 
     // function declarations
@@ -78,6 +79,11 @@ $(document).ready(function () {
             function (responseUnformatted) {
                 let response = JSON.parse(responseUnformatted);
                 console.log(response);
+                if (response.events == null) {
+                    $(".loader").hide();
+                    $("#inlineFormInput").val('');
+                    $("#exampleModalCenter").modal();
+                }
                 let darkskyHourlyDataArr = darkskyResponse.hourly.data;
                 $("tbody").empty();
                 // sorting function
@@ -91,7 +97,7 @@ $(document).ready(function () {
                     } else {
                         return 0;
                     }
-                   
+
                 });
                 console.log(sortedEvents);
 
@@ -149,5 +155,5 @@ $(document).ready(function () {
             });
     };
 
-   
+
 })
