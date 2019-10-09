@@ -38,8 +38,8 @@ $(document).ready(function () {
         })
             .then(function (response) {
                 console.log(response);
-                let lat = response.results[0].geometry.lat;
-                let lon = response.results[0].geometry.lng;
+                let lat = response.results[1].geometry.lat;
+                let lon = response.results[1].geometry.lng;
                 darkskyCall(lat, lon, city);
             },
                 function (error) {
@@ -54,8 +54,9 @@ $(document).ready(function () {
             url: darkskyUrl,
             method: "GET"
         })
-            .then(function (response) {
-                eventfulCall(city, response);
+            .then(function (darkskyResponse) {
+                console.log(darkskyResponse);
+                eventfulCall(city, darkskyResponse);
             },
                 function (error) {
                     console.error(error);
@@ -126,7 +127,7 @@ $(document).ready(function () {
                                 "<td>" + eventAddress + "</td>" +
                                 "<td>" + eventDate + "</td>" +
                                 "<td>" + eventTime + "</td>" +
-                                "<td>" + `${cloudiness}, Temp(F) = ${mainTemp}` + "</td>");
+                                "<td>" + `${cloudiness}, Temp(F) = ${mainTemp}` + "°</td>");
                             $(tRow).append(tData);
                             $("tbody").append(tRow);
                             // This is for card data
@@ -137,7 +138,7 @@ $(document).ready(function () {
                                 '<p class="venue">' + eventVenue + '</p>' +
                                 '<p class="address">' + eventAddress + '</p>' +
                                 '<p class="time">' + eventTime + '</p>' +
-                                '<p class="weather">' + `${cloudiness}, Temp(F) = ${mainTemp}` + '</p>' +
+                                '<p class="weather">' + `${cloudiness}, Temp(F) = ${mainTemp}` + '°</p>' +
                                 '</div>'
                             )
                             $(".card-div").append(cData);
