@@ -38,9 +38,15 @@ $(document).ready(function () {
         })
             .then(function (response) {
                 console.log(response);
-                let lat = response.results[1].geometry.lat;
-                let lon = response.results[1].geometry.lng;
-                darkskyCall(lat, lon, city);
+                if (response.results.length === 1) {
+                    $(".loader").hide();
+                    $("#inlineFormInput").val('');
+                    $("#exampleModalCenter").modal();
+                } else {
+                    let lat = response.results[1].geometry.lat;
+                    let lon = response.results[1].geometry.lng;
+                    darkskyCall(lat, lon, city);
+                };
             },
                 function (error) {
                     console.error(error);
@@ -66,7 +72,6 @@ $(document).ready(function () {
     // function declarations
     function eventfulCall(city, darkskyResponse) {
         let queryUrl = `${solveCorsError}http://api.eventful.com/json/events/search?app_key=${eventfulKey}&location=${city}&sort_order=popularity&date=this week`;
-        // let queryUrl = `https://cors-anywhere.herokuapp.com/http://api.eventful.com/json/categories/list?app_key=${eventfulKey}`;
         $.ajax(
             {
                 url: queryUrl,
@@ -94,8 +99,7 @@ $(document).ready(function () {
                         return 1;
                     } else {
                         return 0;
-                    }
-
+                    };
                 });
                 console.log(sortedEvents);
                 $(".table-1").show();
@@ -117,7 +121,6 @@ $(document).ready(function () {
                         let darkskyMinusEventTime = moment(darkskyDateTime).diff(moment(formattedEventDateTime), "minutes");
                         let eventMinusDarksky = moment(formattedEventDateTime).diff(moment(darkskyDateTime), "minutes");
                         if (darkskyDateTime == formattedEventDateTime || darkskyMinusEventTime <= 30 && darkskyMinusEventTime >= 0 || eventMinusDarksky < 30 && eventMinusDarksky >= 0) {
-                            console.log("anything");
                             let cloudiness = darkskyResponse.hourly.data[j].summary;
                             let mainTemp = Math.round(darkskyResponse.hourly.data[j].temperature);
                             // This is for table data
@@ -142,8 +145,7 @@ $(document).ready(function () {
                                 '<p class="time">' + eventTime + '</p>' +
                                 '<p class="weather">' + `${cloudiness}, Temp(F) = ${mainTemp}` + '°</p>' +
                                 '</div>'
-                            )
-                            console.log("card-view");
+                            );
                             $(".card-div").append(cData);
                             $(".loader").hide();
                         }
