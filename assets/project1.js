@@ -103,6 +103,7 @@ $(document).ready(function () {
                 });
                 console.log(sortedEvents);
                 $(".table-1").show();
+                $(".loader").hide();
                 for (let i = 0; i < response.events.event.length; i++) {
                     let eventUrl = response.events.event[i].url;
                     let eventTitle = response.events.event[i].title;
@@ -113,9 +114,16 @@ $(document).ready(function () {
                     let eventDateTimeArr = response.events.event[i].start_time.split(" ");
                     let eventDate = moment(eventDateTimeArr[0]).format('dddd, MMMM Do YYYY');
                     let eventTime = moment(eventDateTimeArr[1], 'HH:mm:ss').format('h:mm A');
-                    let eventImageWithLocalPath = response.events.event[i].image.medium.url;
-                    let webPath = "https:";
-                    let eventImage = webPath + eventImageWithLocalPath;
+                    let eventImageWithLocalPath;
+                    let webPath;
+                    let eventImage;
+                    if (response.events.event[i].image == null) {
+                        eventImage = "./assets/images/image-not-available.png";
+                    } else {
+                        eventImageWithLocalPath = response.events.event[i].image.medium.url;
+                        webPath = "https:";
+                        eventImage = webPath + eventImageWithLocalPath;
+                    };
                     for (let j = 0; j < darkskyHourlyDataArr.length; j++) {
                         let darkskyDateTime = moment.unix(darkskyHourlyDataArr[j].time).format('LLLL');
                         let darkskyMinusEventTime = moment(darkskyDateTime).diff(moment(formattedEventDateTime), "minutes");
