@@ -131,8 +131,8 @@ $(document).ready(function () {
                                 "<td>" + `${cloudiness}, Temp(F) = ${mainTemp}` + "°</td>");
                                 $(tRow).append(tData);
                                 $("tbody").append(tRow);
+                                
                                 // This is for card data
-                              
                             let cData = $(
                                 '<div class="flex-container bg-light m-3 rounded"><img class="image text-center" src="' + eventImage + '" alt="Card Image"><div class="info">' +
                                 '<a href="' + eventUrl + '" target="_blank"><h5 class="card-title event">' + eventTitle + '</h5></a>' +
