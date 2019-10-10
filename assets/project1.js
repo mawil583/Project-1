@@ -117,23 +117,25 @@ $(document).ready(function () {
                         let darkskyMinusEventTime = moment(darkskyDateTime).diff(moment(formattedEventDateTime), "minutes");
                         let eventMinusDarksky = moment(formattedEventDateTime).diff(moment(darkskyDateTime), "minutes");
                         if (darkskyDateTime == formattedEventDateTime || darkskyMinusEventTime <= 30 && darkskyMinusEventTime >= 0 || eventMinusDarksky < 30 && eventMinusDarksky >= 0) {
+                            console.log("anything");
                             let cloudiness = darkskyResponse.hourly.data[j].summary;
                             let mainTemp = Math.round(darkskyResponse.hourly.data[j].temperature);
                             // This is for table data
                             let tRow = $("<tr>");
                             let tData = $(
-                                "<td>" + eventTitle + "</td>" +
+                                "<td><a href='" + eventUrl + "' target='_blank'>" + eventTitle + "</a></td>" +
                                 "<td>" + eventVenue + "</td>" +
                                 "<td>" + eventAddress + "</td>" +
                                 "<td>" + eventDate + "</td>" +
                                 "<td>" + eventTime + "</td>" +
                                 "<td>" + `${cloudiness}, Temp(F) = ${mainTemp}` + "°</td>");
-                            $(tRow).append(tData);
-                            $("tbody").append(tRow);
-                            // This is for card data
+                                $(tRow).append(tData);
+                                $("tbody").append(tRow);
+                                // This is for card data
+                              
                             let cData = $(
                                 '<div class="flex-container bg-light m-3 rounded"><img class="image text-center" src="' + eventImage + '" alt="Card Image"><div class="info">' +
-                                '<h5 class="card-title event">' + eventTitle + '</h5>' +
+                                '<a href="' + eventUrl + '" target="_blank"><h5 class="card-title event">' + eventTitle + '</h5></a>' +
                                 '<p class="date">' + eventDate + '</p>' +
                                 '<p class="venue">' + eventVenue + '</p>' +
                                 '<p class="address">' + eventAddress + '</p>' +
@@ -141,6 +143,7 @@ $(document).ready(function () {
                                 '<p class="weather">' + `${cloudiness}, Temp(F) = ${mainTemp}` + '°</p>' +
                                 '</div>'
                             )
+                            console.log("card-view");
                             $(".card-div").append(cData);
                             $(".loader").hide();
                         }
@@ -152,6 +155,4 @@ $(document).ready(function () {
                 console.log(error)
             });
     };
-
-
 })
