@@ -126,7 +126,7 @@ $(document).ready(function () {
                             // This is for table data
                             let tRow = $("<tr>");
                             let tData = $(
-                                "<td><a href='" + eventUrl + "' target='_blank'>" + eventTitle + "</a></td>" +
+                                "<td><a href='" + eventUrl + "' target='_blank' class='text-info'>" + eventTitle + "</a></td>" +
                                 "<td>" + eventVenue + "</td>" +
                                 "<td>" + eventAddress + "</td>" +
                                 "<td>" + eventDate + "</td>" +
@@ -138,7 +138,7 @@ $(document).ready(function () {
                                 // This is for card data
                             let cData = $(
                                 '<div class="flex-container bg-light m-3 rounded"><img class="image text-center" src="' + eventImage + '" alt="Card Image"><div class="info">' +
-                                '<a href="' + eventUrl + '" target="_blank"><h5 class="card-title event">' + eventTitle + '</h5></a>' +
+                                '<a href="' + eventUrl + '" target="_blank"><h5 class="card-title event text-info">' + eventTitle + '</h5></a>' +
                                 '<p class="date">' + eventDate + '</p>' +
                                 '<p class="venue">' + eventVenue + '</p>' +
                                 '<p class="address">' + eventAddress + '</p>' +
